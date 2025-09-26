@@ -11,21 +11,54 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <!-- Babel (JSX in the browser for demo/dev) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Favicon（可选）-->
+    <link rel="icon" href="assets/logo.png" />
+    <style>
+      /* 额外的小样式（非 Tailwind 部分） */
+      .tilt {
+        transform-style: preserve-3d;
+        transition: transform .2s ease, box-shadow .2s ease;
+      }
+      .tilt:hover {
+        box-shadow: 0 20px 60px rgba(16,185,129,.15);
+      }
+      .glass {
+        backdrop-filter: blur(8px);
+      }
+      /* 发光渐变描边容器 */
+      .glow-wrap {
+        position: relative;
+        border-radius: 1.5rem;
+        overflow: hidden;
+      }
+      .glow-wrap::before {
+        content: "";
+        position: absolute; inset: -2px;
+        background: conic-gradient(from 180deg at 50% 50%, #10b98133, #60a5fa33, #f59e0b33, #10b98133);
+        filter: blur(12px);
+        z-index: 0;
+      }
+      .glow-wrap > * { position: relative; z-index: 1; }
+    </style>
   </head>
-  <body class="bg-white">
+  <body class="bg-gray-950 text-gray-100">
     <div id="root"></div>
 
     <script type="text/babel">
       const React = window.React, ReactDOM = window.ReactDOM;
-      const { useState, useMemo, useRef, useEffect } = React;
+      const { useState, useMemo, useEffect, useRef } = React;
 
-      // ——— Config ——
+      // ========= Config =========
       const CLUB = {
         name: "BETA | Berkeley Emerging Technology Association",
         tagline: "Connecting students · founders · investors",
         email: "join@beta-ucb.org",
         location: "UC Berkeley · MLK Student Union",
+<<<<<<< HEAD
         logoUrl: "assets/logo.png",
+=======
+        logoUrl: "assets/logo.png",   // ← 用你的 logo 路径
+>>>>>>> 37a166d (add new features)
         socials: {
           wechat: "https://example.com/wechat",
           instagram: "https://instagram.com/betaucb",
@@ -36,33 +69,15 @@
       };
 
       const SAMPLE_EVENTS = [
-        {
-          id: 1,
-          title: "Kickoff & Lightning Demos",
-          date: "2025-09-30 19:00",
-          where: "Soda Hall 306",
+        { id: 1, title: "Kickoff & Lightning Demos", date: "2025-09-30 19:00", where: "Soda Hall 306",
           brief: "Meet the core team, learn our plans, and see quick project demos.",
-          tags: ["In-person", "Recruiting", "Networking"],
-          rsvp: "https://lu.ma/yourclub-kickoff",
-        },
-        {
-          id: 2,
-          title: "Hack Night #1: Idea → Prototype",
-          date: "2025-10-07 18:30",
-          where: "Etcheverry 3109",
+          tags: ["In-person", "Recruiting", "Networking"], rsvp: "https://lu.ma/yourclub-kickoff" },
+        { id: 2, title: "Hack Night #1: Idea → Prototype", date: "2025-10-07 18:30", where: "Etcheverry 3109",
           brief: "Bring an idea and build a demo in 2 hours with mentors and templates.",
-          tags: ["Workshop", "Prototype"],
-          rsvp: "https://lu.ma/yourclub-hacknight1",
-        },
-        {
-          id: 3,
-          title: "Alumni Founder Talk: From Campus to Startup",
-          date: "2025-10-20 19:00",
-          where: "Zoom (link after registration)",
+          tags: ["Workshop", "Prototype"], rsvp: "https://lu.ma/yourclub-hacknight1" },
+        { id: 3, title: "Alumni Founder Talk: From Campus to Startup", date: "2025-10-20 19:00", where: "Zoom",
           brief: "An alum founder shares the 0→1 journey and common pitfalls.",
-          tags: ["Talk", "Founders"],
-          rsvp: "https://lu.ma/yourclub-founder-talk",
-        },
+          tags: ["Talk", "Founders"], rsvp: "https://lu.ma/yourclub-founder-talk" },
       ];
 
       const LEADS = [
@@ -72,12 +87,12 @@
         { name: "Sophie Wang", role: "Events Lead", major: "Statistics", avatar: "https://i.pravatar.cc/120?img=49" },
       ];
 
-      // ——— UI helpers ——
+      // ========= Utilities =========
       const Section = ({ id, title, children, desc }) => (
-        <section id={id} className="scroll-mt-24 py-16 md:py-24">
+        <section id={id} className="scroll-mt-24 py-16 md:py-24 reveal">
           <div className="mx-auto max-w-6xl px-4">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{title}</h2>
-            {desc && <p className="mt-2 text-sm md:text-base text-gray-500">{desc}</p>}
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">{title}</h2>
+            {desc && <p className="mt-2 text-sm md:text-base text-gray-400">{desc}</p>}
             <div className="mt-8">{children}</div>
           </div>
         </section>
@@ -86,45 +101,189 @@
       function BetaLogo({ className = "h-8 w-8" }) {
         return (
           <svg viewBox="0 0 64 64" className={className} aria-label="BETA UCB Logo" aria-hidden="true">
-            <rect x="2" y="2" width="60" height="60" rx="14" fill="#111827" />
+            <rect x="2" y="2" width="60" height="60" rx="14" fill="#0b0f1a" />
             <path d="M20 16h16c6 0 10 4 10 9 0 4-2 7-6 8 4 1 7 4 7 9 0 6-5 10-12 10H20V16zm12 14c3 0 5-2 5-5s-2-5-5-5h-7v10h7zm1 20c4 0 6-2 6-6s-2-6-6-6h-8v12h8z" fill="white"/>
-            <path d="M42 10 L34 28 H42 L30 54 L36 34 H28 L42 10" fill="#22c55e" />
+            <path d="M42 10 L34 28 H42 L30 54 L36 34 H28 L42 10" fill="#10b981" />
           </svg>
         );
       }
 
+      // 粒子背景（Canvas）
+      function ParticleBG() {
+        const ref = useRef(null);
+        useEffect(() => {
+          const canvas = ref.current; if (!canvas) return;
+          const ctx = canvas.getContext('2d');
+          let w, h, dpr = window.devicePixelRatio || 1;
+          const particles = Array.from({length: 70}).map(() => ({
+            x: Math.random(), y: Math.random(),
+            vx: (Math.random() - 0.5) * 0.0006,
+            vy: (Math.random() - 0.5) * 0.0006
+          }));
+          function resize() {
+            w = canvas.clientWidth; h = canvas.clientHeight;
+            canvas.width = w * dpr; canvas.height = h * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          }
+          function loop() {
+            ctx.clearRect(0,0,w,h);
+            // draw links
+            for (let i=0;i<particles.length;i++){
+              const p = particles[i];
+              for (let j=i+1;j<particles.length;j++){
+                const q = particles[j];
+                const dx=(p.x-q.x)*w, dy=(p.y-q.y)*h;
+                const dist = Math.hypot(dx,dy);
+                if (dist < 120){
+                  const a = 1 - dist/120;
+                  ctx.strokeStyle = `rgba(16,185,129,${0.12*a})`;
+                  ctx.beginPath(); ctx.moveTo(p.x*w,p.y*h); ctx.lineTo(q.x*w,q.y*h); ctx.stroke();
+                }
+              }
+            }
+            // draw points
+            for (const p of particles){
+              p.x += p.vx; p.y += p.vy;
+              if (p.x<0||p.x>1) p.vx*=-1;
+              if (p.y<0||p.y>1) p.vy*=-1;
+              ctx.fillStyle = 'rgba(156, 163, 175, 0.35)';
+              ctx.beginPath(); ctx.arc(p.x*w, p.y*h, 1.6, 0, Math.PI*2); ctx.fill();
+            }
+            raf = requestAnimationFrame(loop);
+          }
+          resize(); let raf = requestAnimationFrame(loop);
+          const onResize = () => resize();
+          window.addEventListener('resize', onResize);
+          return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); };
+        }, []);
+        return <canvas ref={ref} className="absolute inset-0 -z-10 w-full h-full"></canvas>;
+      }
+
+      // 3D Tilt（纯 JS）
+      function useTilt() {
+        return (el) => {
+          if (!el) return;
+          const onMove = (e) => {
+            const r = el.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            el.style.transform = `rotateX(${(-py*6).toFixed(2)}deg) rotateY(${(px*8).toFixed(2)}deg) translateZ(0)`;
+          };
+          const reset = () => { el.style.transform = ""; };
+          el.addEventListener('mousemove', onMove);
+          el.addEventListener('mouseleave', reset);
+        };
+      }
+
+      // 滚动显现
+      function useReveal() {
+        useEffect(() => {
+          const els = document.querySelectorAll('.reveal, .reveal-child > *');
+          els.forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(14px)';
+            el.style.transition = 'opacity .6s ease, transform .6s ease';
+          });
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                e.target.style.opacity = 1;
+                e.target.style.transform = 'translateY(0)';
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.12 });
+          els.forEach(el => io.observe(el));
+          return () => io.disconnect();
+        }, []);
+      }
+
+      // 计数器
+      function Counter({ to = 100, duration = 1200, className = "" }) {
+        const ref = useRef(null);
+        useEffect(() => {
+          const el = ref.current; if (!el) return;
+          const start = performance.now();
+          function tick(t) {
+            const p = Math.min((t - start)/duration, 1);
+            el.textContent = Math.round(p * to).toLocaleString();
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }, [to, duration]);
+        return <span ref={ref} className={className}>0</span>;
+      }
+
+      // Confetti（极简）
+      function confettiBurst(x=window.innerWidth/2, y=window.innerHeight/2) {
+        const c = document.createElement('canvas');
+        c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999';
+        document.body.appendChild(c);
+        const ctx = c.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+        ctx.scale(dpr, dpr);
+        const parts = Array.from({length: 120}).map(()=>({
+          x, y, vx:(Math.random()-0.5)*6, vy:(Math.random()*-6-4),
+          g: 0.15 + Math.random()*0.2, s: 4+Math.random()*4,
+          a: 1, col: `hsl(${Math.random()*360},90%,60%)`, r: Math.random()*Math.PI
+        }));
+        let frame=0;
+        function loop() {
+          ctx.clearRect(0,0,innerWidth,innerHeight);
+          parts.forEach(p=>{
+            p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += 0.1; p.a -= 0.01;
+            ctx.save(); ctx.globalAlpha = Math.max(p.a,0);
+            ctx.translate(p.x, p.y); ctx.rotate(p.r);
+            ctx.fillStyle = p.col; ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s);
+            ctx.restore();
+          });
+          frame++;
+          if (frame < 180) requestAnimationFrame(loop); else c.remove();
+        }
+        loop();
+      }
+
+      // ========= Components =========
       function NavBar({ nav, onJump }) {
         const [open, setOpen] = useState(false);
         return (
-          <div className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur">
-            <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+          <div className="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-950/80 backdrop-blur">
+            <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 {CLUB.logoUrl ? (
-                  <img src={CLUB.logoUrl} alt="logo" className="h-8 w-8 rounded-xl object-contain" />
-                ) : (
-                  <BetaLogo className="h-8 w-8" />
-                )}
-                <button onClick={() => onJump("home")} className="text-sm font-semibold">{CLUB.name}</button>
+                  <img src={CLUB.logoUrl} alt="logo" className="h-10 w-10 rounded-xl object-contain" />
+                ) : (<BetaLogo className="h-10 w-10" />)}
+                <button onClick={() => onJump("home")} className="text-sm font-semibold text-white hover:text-emerald-400">
+                  {CLUB.name}
+                </button>
               </div>
               <nav className="hidden md:flex items-center gap-1">
                 {nav.map((n) => (
-                  <button key={n.id} onClick={() => onJump(n.id)} className="text-sm rounded-xl px-3 py-2 hover:bg-gray-100">
+                  <button key={n.id} onClick={() => onJump(n.id)} className="text-sm rounded-xl px-3 py-2 text-gray-300 hover:bg-gray-800 hover:text-white">
                     {n.label}
                   </button>
                 ))}
-                <a href="#join" onClick={(e)=>{e.preventDefault(); onJump("join");}} className="ml-2 inline-flex items-center rounded-xl bg-gray-900 px-3 py-2 text-sm text-white hover:opacity-90">Join</a>
+                <a href="#join" onClick={(e)=>{e.preventDefault(); onJump("join");}}
+                   className="ml-2 inline-flex items-center rounded-xl bg-emerald-500 px-3 py-2 text-sm text-gray-900 font-semibold hover:bg-emerald-400">
+                  Join
+                </a>
               </nav>
-              <button onClick={() => setOpen((s)=>!s)} className="md:hidden rounded-xl border px-3 py-2 text-sm">Menu</button>
+              <button onClick={() => setOpen(s=>!s)} className="md:hidden rounded-xl border border-gray-700 px-3 py-2 text-sm text-gray-200">
+                Menu
+              </button>
             </div>
             {open && (
-              <div className="md:hidden border-t bg-white">
+              <div className="md:hidden border-t border-gray-800 bg-gray-900">
                 <div className="mx-auto max-w-6xl px-4 py-2 flex flex-wrap items-center gap-2">
                   {nav.map((n) => (
-                    <button key={n.id} onClick={() => { onJump(n.id); setOpen(false); }} className="text-sm rounded-xl px-3 py-2 hover:bg-gray-100">
-                      {n.label}
-                    </button>
+                    <button key={n.id} onClick={() => { onJump(n.id); setOpen(false); }}
+                            className="text-sm rounded-xl px-3 py-2 text-gray-200 hover:bg-gray-800">{n.label}</button>
                   ))}
-                  <a href="#join" onClick={(e)=>{e.preventDefault(); onJump("join"); setOpen(false);}} className="inline-flex items-center rounded-xl bg-gray-900 px-3 py-2 text-sm text-white">Join</a>
+                  <a href="#join" onClick={(e)=>{e.preventDefault(); onJump("join"); setOpen(false);}}
+                     className="inline-flex items-center rounded-xl bg-emerald-500 px-3 py-2 text-sm text-gray-900 font-semibold hover:bg-emerald-400">
+                    Join
+                  </a>
                 </div>
               </div>
             )}
@@ -134,23 +293,42 @@
 
       function HeroCard() {
         return (
-          <div className="relative">
-            <div className="rounded-3xl border bg-white shadow-sm p-6">
+          <div className="relative glow-wrap reveal">
+            <div className="rounded-3xl border border-gray-800 bg-gray-900 shadow-sm p-6">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-emerald-500" />
+                <div className="h-10 w-10 rounded-xl bg-emerald-500/80" />
                 <div>
-                  <div className="text-sm font-semibold">This Week</div>
-                  <div className="text-xs text-gray-500">Highlights</div>
+                  <div className="text-sm font-semibold text-white">This Week</div>
+                  <div className="text-xs text-gray-400">Highlights</div>
                 </div>
               </div>
-              <ul className="mt-4 space-y-3 text-sm text-gray-700">
+              <ul className="mt-4 space-y-3 text-sm text-gray-300">
                 <li>• Kickoff RSVP open (see Events)</li>
                 <li>• Submit your project idea & match a team</li>
                 <li>• Join the mailing list for weekly updates</li>
               </ul>
-              <div className="mt-4 rounded-2xl bg-gray-50 p-4 text-xs text-gray-600">
+              <div className="mt-4 rounded-2xl bg-gray-800 p-4 text-xs text-gray-300">
                 Tip: Bookmark this page. All updates follow the website & newsletter.
               </div>
+            </div>
+          </div>
+        );
+      }
+
+      function StatsBar() {
+        return (
+          <div className="mt-8 grid grid-cols-3 gap-4 reveal-child">
+            <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 text-center">
+              <div className="text-2xl font-extrabold"><Counter to={300} /></div>
+              <div className="text-xs text-gray-400 mt-1">Members</div>
+            </div>
+            <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 text-center">
+              <div className="text-2xl font-extrabold"><Counter to={45} /></div>
+              <div className="text-xs text-gray-400 mt-1">Projects</div>
+            </div>
+            <div className="rounded-2xl border border-gray-800 bg-gray-900 p-4 text-center">
+              <div className="text-2xl font-extrabold"><Counter to={120} /></div>
+              <div className="text-xs text-gray-400 mt-1">Events</div>
             </div>
           </div>
         );
@@ -160,60 +338,58 @@
         const [form, setForm] = useState({ name: "", email: "", role: "Member", track: "Data/AI", note: "" });
         const [done, setDone] = useState(false);
         const handle = (k, v) => setForm((s) => ({ ...s, [k]: v }));
+        const inputCls = "mt-1 w-full rounded-xl border border-gray-700 bg-gray-900 px-3 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500/50";
+        const labelCls = "text-sm text-gray-300";
 
         const submit = (e) => {
           e.preventDefault();
-          console.log("Join form submit:", form);
           setDone(true);
+          confettiBurst(window.innerWidth*0.25, window.innerHeight*0.25);
+          confettiBurst(window.innerWidth*0.75, window.innerHeight*0.25);
         };
 
         if (done) {
           return (
-            <div className="rounded-2xl border bg-white p-6 shadow-sm">
-              <div className="text-lg font-semibold">Submitted ✅</div>
-              <p className="mt-2 text-sm text-gray-600">We’ve recorded your info. Expect an email in ~3 business days.</p>
-              <div className="mt-4 text-sm">
-                In a rush? Email us directly at <a className="underline" href={`mailto:${CLUB.email}?subject=Join ${CLUB.name}`}>{CLUB.email}</a>
+            <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-sm reveal">
+              <div className="text-lg font-semibold text-white">Submitted ✅</div>
+              <p className="mt-2 text-sm text-gray-300">We’ve recorded your info. Expect an email in ~3 business days.</p>
+              <div className="mt-4 text-sm text-gray-300">
+                In a rush? Email us directly at{" "}
+                <a className="underline text-emerald-400 hover:text-emerald-300" href={`mailto:${CLUB.email}?subject=Join ${CLUB.name}`}>{CLUB.email}</a>
               </div>
             </div>
           );
         }
 
         return (
-          <form onSubmit={submit} className="grid gap-4 rounded-2xl border bg-white p-6 shadow-sm md:grid-cols-2">
+          <form onSubmit={submit} className="grid gap-4 rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-sm md:grid-cols-2 reveal">
             <div>
-              <label className="text-sm">Name</label>
-              <input required value={form.name} onChange={(e)=>handle("name", e.target.value)} className="mt-1 w-full rounded-xl border px-3 py-2" placeholder="Your name" />
+              <label className={labelCls}>Name</label>
+              <input required value={form.name} onChange={(e)=>handle("name", e.target.value)} className={inputCls} placeholder="Your name" />
             </div>
             <div>
-              <label className="text-sm">Email</label>
-              <input required type="email" value={form.email} onChange={(e)=>handle("email", e.target.value)} className="mt-1 w-full rounded-xl border px-3 py-2" placeholder="name@berkeley.edu" />
+              <label className={labelCls}>Email</label>
+              <input required type="email" value={form.email} onChange={(e)=>handle("email", e.target.value)} className={inputCls} placeholder="name@berkeley.edu" />
             </div>
             <div>
-              <label className="text-sm">Role</label>
-              <select value={form.role} onChange={(e)=>handle("role", e.target.value)} className="mt-1 w-full rounded-xl border px-3 py-2">
-                <option>Member</option>
-                <option>Volunteer</option>
-                <option>Mentor</option>
-                <option>Partner</option>
+              <label className={labelCls}>Role</label>
+              <select value={form.role} onChange={(e)=>handle("role", e.target.value)} className={inputCls}>
+                <option>Member</option><option>Volunteer</option><option>Mentor</option><option>Partner</option>
               </select>
             </div>
             <div>
-              <label className="text-sm">Track</label>
-              <select value={form.track} onChange={(e)=>handle("track", e.target.value)} className="mt-1 w-full rounded-xl border px-3 py-2">
-                <option>Data/AI</option>
-                <option>Product/Ops</option>
-                <option>Design/UI</option>
-                <option>Blockchain/Web3</option>
+              <label className={labelCls}>Track</label>
+              <select value={form.track} onChange={(e)=>handle("track", e.target.value)} className={inputCls}>
+                <option>Data/AI</option><option>Product/Ops</option><option>Design/UI</option><option>Blockchain/Web3</option>
               </select>
             </div>
             <div className="md:col-span-2">
-              <label className="text-sm">Notes (optional)</label>
-              <textarea value={form.note} onChange={(e)=>handle("note", e.target.value)} className="mt-1 w-full rounded-xl border px-3 py-2" rows={4} placeholder="Briefly share your background and interests" />
+              <label className={labelCls}>Notes (optional)</label>
+              <textarea value={form.note} onChange={(e)=>handle("note", e.target.value)} className={inputCls} rows={4} placeholder="Briefly share your background and interests" />
             </div>
             <div className="md:col-span-2 flex items-center justify-between">
-              <button type="submit" className="rounded-xl bg-gray-900 px-4 py-2.5 text-white">Submit</button>
-              <a className="text-sm underline" href={`mailto:${CLUB.email}?subject=Join ${CLUB.name}`}>Or email us directly</a>
+              <button type="submit" className="rounded-xl bg-emerald-500 px-4 py-2.5 text-gray-900 font-semibold hover:bg-emerald-400">Submit</button>
+              <a className="text-sm underline text-emerald-400 hover:text-emerald-300" href={`mailto:${CLUB.email}?subject=Join ${CLUB.name}`}>Or email us directly</a>
             </div>
           </form>
         );
@@ -222,209 +398,143 @@
       function FAQ({ q, a }) {
         const [open, setOpen] = useState(false);
         return (
-          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-gray-800 bg-gray-900 p-5 shadow-sm reveal">
             <button onClick={()=>setOpen(o=>!o)} className="w-full text-left flex items-start justify-between gap-4">
-              <span className="font-medium">{q}</span>
-              <span className="text-gray-500 text-xl leading-none">{open ? "−" : "+"}</span>
+              <span className="font-medium text-white">{q}</span>
+              <span className="text-gray-400 text-xl leading-none">{open ? "−" : "+"}</span>
             </button>
-            {open && <p className="mt-3 text-sm text-gray-600">{a}</p>}
+            {open && <p className="mt-3 text-sm text-gray-300">{a}</p>}
           </div>
         );
       }
 
       function Footer() {
         return (
-          <footer className="border-t bg-white">
+          <footer className="border-t border-gray-800 bg-gray-950 reveal">
             <div className="mx-auto max-w-6xl px-4 py-10 grid md:grid-cols-3 gap-8">
               <div>
-                <div className="text-lg font-semibold">{CLUB.name}</div>
-                <p className="mt-2 text-sm text-gray-600">{CLUB.tagline}</p>
+                <div className="text-lg font-semibold text-white">{CLUB.name}</div>
+                <p className="mt-2 text-sm text-gray-400">{CLUB.tagline}</p>
               </div>
               <div>
-                <div className="text-sm font-semibold">Navigate</div>
-                <ul className="mt-2 text-sm text-gray-600 space-y-1">
+                <div className="text-sm font-semibold text-white">Navigate</div>
+                <ul className="mt-2 text-sm text-gray-400 space-y-1">
                   {[
-                    ["Home", "home"],
-                    ["About", "about"],
-                    ["Events", "events"],
-                    ["Projects", "projects"],
-                    ["Join", "join"],
-                    ["FAQ", "faq"],
-                    ["Contact", "contact"],
+                    ["Home", "home"], ["About", "about"], ["Events", "events"],
+                    ["Projects", "projects"], ["Join", "join"], ["FAQ", "faq"], ["Contact", "contact"],
                   ].map(([label, id]) => (
-                    <li key={id}><a href={`#${id}`}>{label}</a></li>
+                    <li key={id}><a className="hover:text-emerald-400" href={`#${id}`}>{label}</a></li>
                   ))}
                 </ul>
               </div>
               <div>
-                <div className="text-sm font-semibold">Subscribe</div>
-                <p className="mt-2 text-sm text-gray-600">
-                  Send a blank email to <a className="underline" href={`mailto:${CLUB.email}?subject=Subscribe`}>{CLUB.email}</a> to receive our weekly digest.
+                <div className="text-sm font-semibold text-white">Subscribe</div>
+                <p className="mt-2 text-sm text-gray-400">
+                  Send a blank email to <a className="underline text-emerald-400 hover:text-emerald-300" href={`mailto:${CLUB.email}?subject=Subscribe`}>{CLUB.email}</a> to receive our weekly digest.
                 </p>
               </div>
             </div>
-            <div className="border-t">
+            <div className="border-t border-gray-800">
               <div className="mx-auto max-w-6xl px-4 h-12 text-xs text-gray-500 flex items-center">© {new Date().getFullYear()} {CLUB.name}. All rights reserved.</div>
             </div>
           </footer>
         );
       }
 
-      // ——— Hero FX ——
-      const FX_CSS = `
-      @keyframes blob {
-        0%, 100% { transform: translate(0,0) scale(1); }
-        25% { transform: translate(20px,-30px) scale(1.05); }
-        50% { transform: translate(-10px,15px) scale(0.98); }
-        75% { transform: translate(-25px,25px) scale(1.03); }
-      }
-      @keyframes pulseDot {
-        0%, 100% { opacity: .3; transform: scale(1); }
-        50% { opacity: .9; transform: scale(1.4); }
-      }`;
-
+      // Hero 背景 FX（含粒子）
       function HeroFX() {
-        const ref = React.useRef(null);
-        useEffect(() => {
-          const el = ref.current;
-          if (!el) return;
-          const onMove = (e) => {
-            const { innerWidth:w, innerHeight:h } = window;
-            const mx = (e.clientX - w/2) / (w/2);
-            const my = (e.clientY - h/2) / (h/2);
-            el.style.setProperty('--mx', mx.toString());
-            el.style.setProperty('--my', my.toString());
-          };
-          window.addEventListener('mousemove', onMove);
-          return () => window.removeEventListener('mousemove', onMove);
-        }, []);
         return (
-          <div ref={ref} className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-            <div style={{animation:'blob 18s ease-in-out infinite', transform:'translate3d(calc(var(--mx,0)*8px),calc(var(--my,0)*-6px),0)'}} className="absolute -top-16 -left-20 h-72 w-72 rounded-full bg-indigo-400/30 blur-3xl" />
-            <div style={{animation:'blob 22s ease-in-out infinite', transform:'translate3d(calc(var(--mx,0)*-6px),calc(var(--my,0)*5px),0)'}} className="absolute top-10 -right-24 h-80 w-80 rounded-full bg-amber-300/30 blur-3xl" />
-            <div style={{animation:'blob 20s ease-in-out infinite', transform:'translate3d(calc(var(--mx,0)*4px),calc(var(--my,0)*4px),0)'}} className="absolute -bottom-24 left-1/3 h-80 w-80 rounded-full bg-emerald-300/30 blur-3xl" />
-            <svg className="absolute inset-0 h-full w-full opacity-25" aria-hidden="true">
-              <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" className="text-gray-300" />
-            </svg>
-            <div className="absolute left-[10%] top-[30%] h-2 w-2 rounded-full bg-indigo-600" style={{animation:'pulseDot 3.2s ease-in-out infinite'}} />
-            <div className="absolute right-[12%] top-[40%] h-2 w-2 rounded-full bg-amber-500" style={{animation:'pulseDot 2.6s ease-in-out infinite .4s'}} />
-            <div className="absolute left-1/2 bottom-[18%] h-2 w-2 rounded-full bg-emerald-600" style={{animation:'pulseDot 2.9s ease-in-out infinite .8s'}} />
+          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-950 via-gray-950 to-emerald-950/30"></div>
+            <div className="absolute -top-16 -left-20 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl"></div>
+            <div className="absolute top-10 -right-24 h-80 w-80 rounded-full bg-amber-400/10 blur-3xl"></div>
+            <div className="absolute -bottom-24 left-1/3 h-80 w-80 rounded-full bg-emerald-400/10 blur-3xl"></div>
+            <ParticleBG />
           </div>
         );
       }
 
-      // ——— App ——
+      // ========= App =========
       function ClubSite() {
+        useReveal();
+
         const [events] = useState(SAMPLE_EVENTS);
-        const nav = useMemo(
-          () => [
-            { id: "home", label: "Home" },
-            { id: "about", label: "About" },
-            { id: "events", label: "Events" },
-            { id: "projects", label: "Projects" },
-            { id: "join", label: "Join" },
-            { id: "faq", label: "FAQ" },
-            { id: "contact", label: "Contact" },
-          ],
-          []
-        );
+        const nav = useMemo(() => [
+          { id: "home", label: "Home" },
+          { id: "about", label: "About" },
+          { id: "events", label: "Events" },
+          { id: "projects", label: "Projects" },
+          { id: "join", label: "Join" },
+          { id: "faq", label: "FAQ" },
+          { id: "contact", label: "Contact" },
+        ], []);
 
         const scrollTo = (id) => {
           document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
         };
 
-        useEffect(() => {
-          try {
-            const tests = [
-              { name: "BetaLogo defined", pass: typeof BetaLogo === "function" },
-              { name: "HeroFX defined", pass: typeof HeroFX === "function" },
-              { name: "NavBar defined", pass: typeof NavBar === "function" },
-              { name: "HeroCard defined", pass: typeof HeroCard === "function" },
-              { name: "JoinForm defined", pass: typeof JoinForm === "function" },
-              { name: "Footer defined", pass: typeof Footer === "function" },
-              { name: "Events non-empty", pass: Array.isArray(SAMPLE_EVENTS) && SAMPLE_EVENTS.length > 0 },
-              { name: "Club name set", pass: typeof CLUB.name === "string" && CLUB.name.length > 0 },
-              { name: "FX_CSS string", pass: typeof FX_CSS === "string" && FX_CSS.length > 0 },
-              { name: "Nav items ok", pass: Array.isArray(nav) && nav.length >= 5 },
-              { name: "DOM has #home", pass: !!document.getElementById("home") },
-            ];
-            const failed = tests.filter((t) => !t.pass);
-            if (failed.length) {
-              console.warn("[BETA Site SmokeTests] Failed:", failed.map((f) => f.name));
-            } else {
-              console.log("[BETA Site SmokeTests] All passed");
-            }
-          } catch (err) {
-            console.warn("[BETA Site SmokeTests] Error", err);
-          }
-        }, [nav]);
+        const tiltRef = useRef(null);
+        const attachTilt = useTilt();
+        useEffect(() => { if (tiltRef.current) attachTilt(tiltRef.current); }, [tiltRef]);
 
         return (
-          <div className="min-h-screen bg-white text-gray-900">
+          <div className="min-h-screen">
             <NavBar nav={nav} onJump={scrollTo} />
-
-            {/* Hero */}
             <header id="home" className="relative overflow-hidden">
-              <style>{FX_CSS}</style>
               <HeroFX />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-white to-emerald-50" />
               <div className="mx-auto max-w-6xl px-4 pt-20 md:pt-28 pb-16 md:pb-24">
                 <div className="grid md:grid-cols-2 gap-10 items-center">
-                  <div>
-                    <span className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs md:text-sm bg-white/70 backdrop-blur">
-                      <span className="h-2 w-2 rounded-full bg-emerald-500" /> Recruiting this semester
+                  <div className="reveal">
+                    {CLUB.logoUrl && (
+                      <img src={CLUB.logoUrl} alt="logo"
+                           className="h-24 w-24 mb-5 object-contain drop-shadow-[0_8px_24px_rgba(16,185,129,0.25)]" />
+                    )}
+                    <span className="inline-flex items-center gap-2 rounded-full border border-gray-800 px-3 py-1 text-xs md:text-sm bg-gray-900/60 glass">
+                      <span className="h-2 w-2 rounded-full bg-emerald-400" /> Recruiting this semester
                     </span>
-                    <h1 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight">{CLUB.name}</h1>
-                    <p className="mt-3 md:mt-4 text-gray-600 md:text-lg">{CLUB.tagline}</p>
-                    <p className="mt-2 text-sm text-gray-500 whitespace-pre-line">{CLUB.intro}</p>
+                    <h1 className="mt-4 text-3xl md:text-5xl font-extrabold leading-tight text-white">{CLUB.name}</h1>
+                    <p className="mt-3 md:mt-4 text-gray-300 md:text-lg">{CLUB.tagline}</p>
+                    <p className="mt-2 text-sm text-gray-400 whitespace-pre-line">{CLUB.intro}</p>
+                    <StatsBar />
                     <div className="mt-6 flex flex-wrap gap-3">
-                      <a
-                        href="#join"
-                        onClick={(e) => { e.preventDefault(); scrollTo("join"); }}
-                        className="inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-gray-900 px-4 py-2.5 text-white shadow-sm hover:opacity-90"
-                      >
+                      <a href="#join" onClick={(e) => { e.preventDefault(); scrollTo("join"); }}
+                         className="inline-flex items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500 px-4 py-2.5 text-gray-900 font-semibold shadow-sm hover:bg-emerald-400">
                         Join Now
                       </a>
-                      <a
-                        href={events[0]?.rsvp || "#events"}
-                        className="inline-flex items-center justify-center rounded-2xl border border-gray-300 bg-white px-4 py-2.5 text-gray-900 hover:bg-gray-50"
-                        target="_blank" rel="noreferrer"
-                      >
+                      <a href={events[0]?.rsvp || "#events"} target="_blank" rel="noreferrer"
+                         className="inline-flex items-center justify-center rounded-2xl border border-gray-700 bg-gray-900 px-4 py-2.5 text-gray-100 hover:bg-gray-800">
                         View Next Event
                       </a>
                     </div>
-                    <p className="mt-3 text-sm text-gray-500">Location: {CLUB.location}</p>
+                    <p className="mt-3 text-sm text-gray-400">Location: {CLUB.location}</p>
                   </div>
-                  <HeroCard />
+                  <div ref={tiltRef} className="tilt">
+                    <HeroCard />
+                  </div>
                 </div>
               </div>
             </header>
 
             <Section id="about" title="About Us" desc={CLUB.intro}>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="rounded-2xl border bg-white p-6 shadow-sm">
-                  <h3 className="font-semibold">What We Do</h3>
-                  <ul className="mt-3 space-y-2 text-sm leading-6 text-gray-700 list-disc pl-5">
+              <div className="grid md:grid-cols-2 gap-8 reveal-child">
+                <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-sm">
+                  <h3 className="font-semibold text-white">What We Do</h3>
+                  <ul className="mt-3 space-y-2 text-sm leading-6 text-gray-300 list-disc pl-5">
                     <li>Weekly <strong>Hack Night</strong>: idea → prototype.</li>
                     <li>Alumni/industry <strong>talks</strong> & <strong>project pairing</strong>.</li>
                     <li>Hands-on <strong>projects</strong> (AI, data, blockchain, product design).</li>
                     <li>Hackathons & cross-campus collaborations.</li>
                   </ul>
                 </div>
-                <div className="rounded-2xl border bg-white p-6 shadow-sm">
-                  <h3 className="font-semibold">Who We Are</h3>
-                  <p className="mt-3 text-sm leading-6 text-gray-700">Members from CS / Data / Stats / IEOR / Business and more — all backgrounds welcome.</p>
+                <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-sm">
+                  <h3 className="font-semibold text-white">Who We Are</h3>
+                  <p className="mt-3 text-sm leading-6 text-gray-300">Members from CS / Data / Stats / IEOR / Business and more — all backgrounds welcome.</p>
                   <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {LEADS.map((p) => (
-                      <div key={p.name} className="rounded-xl border p-4 text-center">
-                        <img src={p.avatar} alt={p.name} className="mx-auto h-16 w-16 rounded-full object-cover" />
-                        <div className="mt-2 text-sm font-semibold">{p.name}</div>
-                        <div className="text-xs text-gray-500">{p.role}</div>
+                      <div key={p.name} className="rounded-xl border border-gray-800 bg-gray-900 p-4 text-center">
+                        <img src={p.avatar} alt={p.name} className="mx-auto h-16 w-16 rounded-full object-cover ring-1 ring-gray-800" />
+                        <div className="mt-2 text-sm font-semibold text-white">{p.name}</div>
+                        <div className="text-xs text-gray-400">{p.role}</div>
                       </div>
                     ))}
                   </div>
@@ -435,31 +545,31 @@
             <Section id="events" title="Events" desc="Upcoming programs. Follow our socials or join the list for more.">
               <div className="grid md:grid-cols-3 gap-6">
                 {events.map((ev) => (
-                  <div key={ev.id} className="rounded-2xl border bg-white p-5 shadow-sm flex flex-col">
-                    <div className="text-xs text-gray-500">{ev.date} · {ev.where}</div>
-                    <h3 className="mt-2 font-semibold text-lg">{ev.title}</h3>
-                    <p className="mt-2 text-sm text-gray-600 flex-1">{ev.brief}</p>
+                  <div key={ev.id} className="rounded-2xl border border-gray-800 bg-gray-900 p-5 shadow-sm flex flex-col reveal tilt">
+                    <div className="text-xs text-gray-400">{ev.date} · {ev.where}</div>
+                    <h3 className="mt-2 font-semibold text-lg text-white">{ev.title}</h3>
+                    <p className="mt-2 text-sm text-gray-300 flex-1">{ev.brief}</p>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {ev.tags.map((t) => (
-                        <span key={t} className="text-[11px] rounded-full border px-2 py-1 text-gray-600">{t}</span>
+                        <span key={t} className="text-[11px] rounded-full border border-gray-700 px-2 py-1 text-gray-300 bg-gray-800/60">{t}</span>
                       ))}
                     </div>
-                    <a href={ev.rsvp} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center justify-center rounded-xl border border-gray-200 bg-gray-900 px-3 py-2 text-sm text-white hover:opacity-90">RSVP</a>
+                    <a href={ev.rsvp} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500 px-3 py-2 text-sm text-gray-900 font-semibold hover:bg-emerald-400">RSVP</a>
                   </div>
                 ))}
               </div>
             </Section>
 
             <Section id="projects" title="Project Tracks" desc="Join a one-semester project with clear deliverables.">
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-3 gap-6 reveal-child">
                 {[
                   { title: "AI Applications", bullets: ["RAG/Agents", "Model evals", "Ship web/app"] },
                   { title: "Data Products", bullets: ["Data collection/cleaning", "Dashboards", "A/B testing"] },
                   { title: "Blockchain", bullets: ["Smart contracts", "Security basics", "Token design"] },
                 ].map((card) => (
-                  <div key={card.title} className="rounded-2xl border bg-white p-6 shadow-sm">
-                    <h3 className="font-semibold">{card.title}</h3>
-                    <ul className="mt-3 space-y-2 text-sm text-gray-700 list-disc pl-5">
+                  <div key={card.title} className="rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-sm tilt">
+                    <h3 className="font-semibold text-white">{card.title}</h3>
+                    <ul className="mt-3 space-y-2 text-sm text-gray-300 list-disc pl-5">
                       {card.bullets.map((b) => (<li key={b}>{b}</li>))}
                     </ul>
                   </div>
@@ -472,7 +582,7 @@
             </Section>
 
             <Section id="faq" title="FAQ">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-6 reveal-child">
                 <FAQ q="Do I need a technical background?" a="No. We support multiple roles including product, design, and operations." />
                 <FAQ q="Are events free?" a="Regular events are free. Some workshops may charge a small venue/material fee (we'll announce in advance)." />
                 <FAQ q="How do you evaluate members?" a="Mainly by project delivery, with attendance and contribution considered for leadership opportunities." />
@@ -481,21 +591,21 @@
             </Section>
 
             <Section id="contact" title="Contact & Socials">
-              <div className="rounded-2xl border bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-sm reveal">
                 <div className="grid md:grid-cols-2 gap-6 items-center">
                   <div>
-                    <p className="text-sm text-gray-700">Email: <a className="underline" href={`mailto:${CLUB.email}`}>{CLUB.email}</a></p>
-                    <p className="text-sm text-gray-700 mt-1">Location: {CLUB.location}</p>
+                    <p className="text-sm text-gray-300">Email: <a className="underline text-emerald-400 hover:text-emerald-300" href={`mailto:${CLUB.email}`}>{CLUB.email}</a></p>
+                    <p className="text-sm text-gray-300 mt-1">Location: {CLUB.location}</p>
                     <div className="mt-3 flex flex-wrap gap-3 text-sm">
-                      <a className="rounded-full border px-3 py-1 hover:bg-gray-50" href={CLUB.socials.wechat}>WeChat</a>
-                      <a className="rounded-full border px-3 py-1 hover:bg-gray-50" href={CLUB.socials.instagram}>Instagram</a>
-                      <a className="rounded-full border px-3 py-1 hover:bg-gray-50" href={CLUB.socials.github}>GitHub</a>
-                      <a className="rounded-full border px-3 py-1 hover:bg-gray-50" href={CLUB.socials.website}>Website</a>
+                      <a className="rounded-full border border-gray-700 px-3 py-1 hover:bg-gray-800 text-gray-200" href={CLUB.socials.wechat}>WeChat</a>
+                      <a className="rounded-full border border-gray-700 px-3 py-1 hover:bg-gray-800 text-gray-200" href={CLUB.socials.instagram}>Instagram</a>
+                      <a className="rounded-full border border-gray-700 px-3 py-1 hover:bg-gray-800 text-gray-200" href={CLUB.socials.github}>GitHub</a>
+                      <a className="rounded-full border border-gray-700 px-3 py-1 hover:bg-gray-800 text-gray-200" href={CLUB.socials.website}>Website</a>
                     </div>
                   </div>
-                  <div className="rounded-xl border p-4 bg-gradient-to-br from-gray-50 to-white">
-                    <p className="text-sm text-gray-600">Quick email template:</p>
-                    <pre className="mt-2 whitespace-pre-wrap text-xs md:text-sm text-gray-700">{`Subject: Join ${CLUB.name} - Name / Year / Track
+                  <div className="rounded-xl border border-gray-800 p-4 bg-gray-900">
+                    <p className="text-sm text-gray-300">Quick email template:</p>
+                    <pre className="mt-2 whitespace-pre-wrap text-xs md:text-sm text-gray-300">{`Subject: Join ${CLUB.name} - Name / Year / Track
 
 Hi, I'm XX (year/major) and would like to join ${CLUB.name}.
 My track of interest: (e.g., Data/AI, Product, Design).
